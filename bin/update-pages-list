@@ -1,4 +1,6 @@
 #!/usr/bin/env ruby
+
+require "time"
 require "esa"
 require "denv"
 require "pry"
@@ -23,8 +25,8 @@ class Esapad
       <<-MARKDOWN
       <li>
         <a href="#{ post["url"] }">#{ post["full_name"] }</a>
-        <div class="post-metadata>
-          <span class="post-list__date">#{ post["created_at"] }</span>
+        <div class="post-metadata" style="font-size: 90%;">
+          <span class="post-list__date">#{ Time.parse(post["created_at"]).strftime("%Y-%m-%d %H:%M") }</span>
           by <img src="#{ post["created_by"]["icon"] }" width="20px" height="20px" /> #{ post["created_by"]["screen_name"] }
         </div>
       </li>
