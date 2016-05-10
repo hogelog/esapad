@@ -1,0 +1,39 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    byebug (8.2.5)
+    coderay (1.1.1)
+    denv (0.2.4)
+    esa (1.5.0)
+      faraday (~> 0.9)
+      faraday_middleware
+      mime-types (~> 2.6)
+      multi_xml (~> 0.5.5)
+    faraday (0.9.2)
+      multipart-post (>= 1.2, < 3)
+    faraday_middleware (0.10.0)
+      faraday (>= 0.7.4, < 0.10)
+    method_source (0.8.2)
+    mime-types (2.99.1)
+    multi_xml (0.5.5)
+    multipart-post (2.0.0)
+    pry (0.10.3)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
+    pry-byebug (3.3.0)
+      byebug (~> 8.0)
+      pry (~> 0.10)
+    slop (3.6.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  denv
+  esa
+  pry
+  pry-byebug
+
+BUNDLED WITH
+   1.11.2
