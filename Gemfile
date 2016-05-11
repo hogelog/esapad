@@ -1,7 +1,4 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
-gem "esa"
-
-gem "denv"
-gem "pry"
-gem "pry-byebug"
+# Specify your gem's dependencies in esapad.gemspec
+gemspec
