@@ -45,7 +45,8 @@ class Esapad
         <a href="#{ post["url"] }">#{ post["full_name"] }</a>
         <div class="recently-updated-posts-metadata" style="font-size: 90%;">
           <span class="post-list__date">#{ Time.parse(post["created_at"]).strftime("%Y-%m-%d %H:%M") }</span>
-          by <img src="#{ post["created_by"]["icon"] }" width="20px" height="20px" /> #{ post["created_by"]["screen_name"] }
+          by <img src="#{ post["created_by"]["icon"] }" width="20px" height="20px" />
+          <a href="https://mwed.esa.io/users/#{ post["created_by"]["screen_name"] }">#{ post["created_by"]["screen_name"] }</a>
         </div>
       </li>
       MARKDOWN
