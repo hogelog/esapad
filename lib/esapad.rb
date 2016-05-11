@@ -31,14 +31,14 @@ class Esapad
     end
   end
 
-  def fetch_pages(kind)
+  def fetch_updated_pages(kind)
     FETCH_PAGES.
-      map {|page| @client.posts(q: "wip:false kind:#{kind}", page: page).body["posts"] }.
+      map {|page| @client.posts(q: "wip:false kind:#{kind} -body:RECENTLY-UPDATED-POSTS", page: page).body["posts"] }.
       flatten
   end
 
   def generate_updated_md(kind)
-    posts = fetch_pages(kind)
+    posts = fetch_updated_pages(kind)
     posts.map {|post|
       <<-MARKDOWN
       <li>
