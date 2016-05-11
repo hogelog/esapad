@@ -38,7 +38,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.11)
+  bundler (~> 1.10)
   esapad!
   pry
   pry-byebug
