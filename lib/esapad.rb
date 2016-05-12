@@ -8,8 +8,6 @@ require "pry"
 Denv.load
 
 class Esapad
-  FETCH_PAGES = 1..1
-
   def initialize
     @client = Esa::Client.new(access_token: ENV["ESA_ACCESS_TOKEN"], current_team: ENV["ESA_TEAM"])
   end
@@ -18,11 +16,14 @@ class Esapad
     flow_updated_md = generate_updated_md("flow")
     stock_updated_md = generate_updated_md("stock")
 
+    recently_liked_md = generate_recently_liked_md
+
     target_page = @client.post(ENV["ESA_TARGET_PAGE_ID"])
     target_page_md = target_page.body["body_md"]
 
     target_page_md = replace_pages_list_md(target_page_md, "flow", flow_updated_md)
     target_page_md = replace_pages_list_md(target_page_md, "stock", stock_updated_md)
+    target_page_md = replace_liked_posts_md(target_page_md, recently_liked_md)
 
     if target_page_md != target_page.body["body_md"]
       target_page_md = replace_updated_time(target_page_md)
@@ -32,15 +33,14 @@ class Esapad
   end
 
   def fetch_updated_pages(kind)
-    FETCH_PAGES.
-      map {|page| @client.posts(q: "wip:false kind:#{kind} -body:RECENTLY-UPDATED-POSTS", page: page).body["posts"] }.
-      flatten
+    @client.posts(q: "wip:false kind:#{kind} -body:RECENTLY-UPDATED-POSTS").body["posts"]
   end
 
   def generate_updated_md(kind)
     posts = fetch_updated_pages(kind)
     posts.map {|post|
       <<-MARKDOWN
+
       <li>
         <a href="#{ post["url"] }">#{ post["full_name"] }</a>
         <div class="recently-updated-posts-metadata" style="font-size: 90%;">
@@ -50,7 +50,24 @@ class Esapad
         </div>
       </li>
       MARKDOWN
-    }.join("\n")
+    }.join
+  end
+
+  def generate_recently_liked_md
+    posts = (1..3).
+      map {|page| @client.posts(q: "wip:false", page: page).body["posts"] }.
+      flatten.
+      sort_by {|post| -post["stargazers_count"] }.
+      slice(0, 20).
+      map {|post|
+        <<-MARKDOWN
+
+        <li>
+          <a href="#{ post["url"] }">#{ post["full_name"] }</a>
+          <span class="recently-liked-posts-metadata" style="font-size: 90%;"> :star: #{ post["stargazers_count"] } </span>
+        </li>
+        MARKDOWN
+      }.join
   end
 
   private
@@ -58,7 +75,7 @@ class Esapad
   def replace_pages_list_md(original_md, kind, updated_md)
     original_md.gsub(
       /<!-- RECENTLY-UPDATED-#{kind.upcase}-POSTS-START -->(.+)<!-- RECENTLY-UPDATED-#{kind.upcase}-POSTS-END -->/m,
-      "<!-- RECENTLY-UPDATED-#{kind.upcase}-POSTS-START -->\n#{updated_md}<!-- RECENTLY-UPDATED-#{kind.upcase}-POSTS-END -->"
+      "<!-- RECENTLY-UPDATED-#{kind.upcase}-POSTS-START -->#{updated_md}<!-- RECENTLY-UPDATED-#{kind.upcase}-POSTS-END -->"
     )
   end
 
@@ -66,6 +83,13 @@ class Esapad
     original_md.gsub(
       /<!-- RECENTLY-UPDATED-POSTS-UPDATED-START -->(.+)<!-- RECENTLY-UPDATED-POSTS-UPDATED-END -->/m,
       "<!-- RECENTLY-UPDATED-POSTS-UPDATED-START -->\n更新日時: #{ Time.now.strftime("%Y-%m-%d %H:%M") }\n<!-- RECENTLY-UPDATED-POSTS-UPDATED-END -->",
+    )
+  end
+
+  def replace_liked_posts_md(original_md, updated_md)
+    original_md.gsub(
+      /<!-- RECENTLY-LIKED-POSTS-START -->(.+)<!-- RECENTLY-LIKED-POSTS-END -->/m,
+      "<!-- RECENTLY-LIKED-POSTS-START -->#{updated_md}<!-- RECENTLY-LIKED-POSTS-END -->"
     )
   end
 end
