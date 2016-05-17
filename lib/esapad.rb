@@ -32,8 +32,18 @@ class Esapad
     end
   end
 
+  def blog_query
+    ENV["BLOG_CATEGORY"] || "category:日報/"
+  end
+
   def fetch_updated_pages(kind)
-    @client.posts(q: "wip:false kind:#{kind} -body:RECENTLY-UPDATED-POSTS").body["posts"]
+    query = case kind
+      when "flow"
+        "wip:false #{blog_query} -body:RECENTLY-UPDATED-POSTS"
+      when "stock"
+        "wip:false -#{blog_query} -body:RECENTLY-UPDATED-POSTS"
+    end
+    @client.posts(q: query).body["posts"]
   end
 
   def generate_updated_md(kind)
