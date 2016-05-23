@@ -65,10 +65,11 @@ class Esapad
 
   def generate_recently_liked_md
     posts = (1..3).
-      map {|page| @client.posts(q: "wip:false", page: page).body["posts"] }.
+      map {|page| @client.posts(q: "wip:false created:>#{Date.today - 60} stars:>3", page: page).body["posts"] }.
       flatten.
       sort_by {|post| -post["stargazers_count"] }.
       slice(0, 20).
+      sort_by {|post| -Time.parse(post["updated_at"]).to_i }.
       map {|post|
         <<-MARKDOWN
 
