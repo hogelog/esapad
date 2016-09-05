@@ -27,7 +27,7 @@ class Esapad
 
     if target_page_md != target_page.body["body_md"]
       target_page_md = replace_updated_time(target_page_md)
-      @client.update_post(target_page_id, body_md: target_page_md)
+      @client.update_post(target_page_id, body_md: target_page_md, updated_by: "esa_bot")
       puts "Updated: #{ target_page.body["url"] }"
     end
   end
