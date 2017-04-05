@@ -21,8 +21,31 @@ Or install it yourself as:
     $ gem install esapad
 
 ## Usage
+### Edit target page
+```markdown
+## Blogs
+<!-- RECENTLY-UPDATED-FLOW-POSTS-START -->
+<!-- RECENTLY-UPDATED-FLOW-POSTS-END -->
 
-TODO: Write usage instructions here
+## Pages
+<!-- RECENTLY-UPDATED-STOCK-POSTS-START -->
+<!-- RECENTLY-UPDATED-STOCK-POSTS-END -->
+
+## Recently Popular Entries
+<!-- RECENTLY-UPDATED-POSTS-UPDATED-START -->
+<!-- RECENTLY-UPDATED-POSTS-UPDATED-END -->
+```
+
+### Update target page by esapad
+```
+$ cp .env.sample .env
+$ vim .env
+...
+ESA_TEAM=yourteam
+ESA_ACCESS_TOKEN=abcdefghijklmn
+ESA_TARGET_PAGE_ID=1
+$ bundle exec ./bin/update-pages-list
+```
 
 ## Development
 
