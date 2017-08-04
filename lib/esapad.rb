@@ -29,7 +29,8 @@ class Esapad
 
     if target_page_md != target_page.body["body_md"]
       target_page_md = replace_updated_time(target_page_md)
-      @client.update_post(target_page_id, body_md: target_page_md, updated_by: "esa_bot")
+      message = skip_notice? ? "[skip notice]" : ""
+      @client.update_post(target_page_id, body_md: target_page_md, updated_by: "esa_bot", message: message)
       puts "Updated: #{ target_page.body["url"] }"
     end
   end
@@ -104,6 +105,10 @@ class Esapad
       /<!-- RECENTLY-LIKED-POSTS-START -->(.+)<!-- RECENTLY-LIKED-POSTS-END -->/m,
       "<!-- RECENTLY-LIKED-POSTS-START -->#{updated_md}<!-- RECENTLY-LIKED-POSTS-END -->"
     )
+  end
+
+  def skip_notice?
+    @skip_notice ||= !!ENV["SKIP_NOTICE"]
   end
 
   def per_page
