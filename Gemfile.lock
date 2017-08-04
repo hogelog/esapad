@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    esapad (0.1.0)
+    esapad (0.2.0)
       denv
       esa
       json
