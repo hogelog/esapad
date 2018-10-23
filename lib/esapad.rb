@@ -53,7 +53,6 @@ class Esapad
     posts = fetch_updated_pages(kind)
     posts.map {|post|
       <<-MARKDOWN
-
       <li>
         <a href="#{ post["url"] }">#{ post["full_name"] }</a>
         <div class="recently-updated-posts-metadata" style="font-size: 90%;">
@@ -75,7 +74,6 @@ class Esapad
       sort_by {|post| -Time.parse(post["updated_at"]).to_i }.
       map {|post|
         <<-MARKDOWN
-
         <li>
           <a href="#{ post["url"] }">#{ post["full_name"] }</a>
           <span class="recently-liked-posts-metadata" style="font-size: 90%;"> :star: #{ post["stargazers_count"] } </span>
