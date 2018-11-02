@@ -58,7 +58,7 @@ class Esapad
         <div class="recently-updated-posts-metadata" style="font-size: 90%;">
           <span class="post-list__date">#{ Time.parse(post["updated_at"]).strftime("%Y-%m-%d %H:%M") }</span>
           by <img src="#{ post["updated_by"]["icon"] }" width="20px" height="20px" />
-          <a href="https://mwed.esa.io/users/#{ post["updated_by"]["screen_name"] }">#{ post["updated_by"]["screen_name"] }</a>
+          <a href="/users/#{ post["updated_by"]["screen_name"] }">#{ post["updated_by"]["screen_name"] }</a>
         </div>
       </li>
       MARKDOWN
